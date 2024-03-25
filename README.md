@@ -478,3 +478,242 @@ done
 
 
 # soal 4
+**soal :**
+Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
+Buatlah program monitoring resource pada PC kalian. Cukup monitoring ram dan monitoring size suatu directory. Untuk ram gunakan command `free -m`. Untuk disk gunakan command `du -sh <target_path>`. Catat semua metrics yang didapatkan dari hasil `free -m`. Untuk hasil `du -sh <target_path>` catat size dari path directory tersebut. Untuk target_path yang akan dimonitor adalah /home/{user}/. 
+Masukkan semua metrics ke dalam suatu file log bernama metrics_{YmdHms}.log. {YmdHms} adalah waktu disaat file script bash kalian dijalankan. Misal dijalankan pada 2024-03-20 15:00:00, maka file log yang akan tergenerate adalah metrics_20240320150000.log. 
+Script untuk mencatat metrics diatas diharapkan dapat berjalan otomatis pada setiap menit. 
+Kemudian, buat satu script untuk membuat agregasi file log ke satuan jam. Script agregasi akan memiliki info dari file-file yang tergenerate tiap menit. Dalam hasil file agregasi tersebut, terdapat nilai minimum, maximum, dan rata-rata dari tiap-tiap metrics. File agregasi akan ditrigger untuk dijalankan setiap jam secara otomatis. Berikut contoh nama file hasil agregasi metrics_agg_2024032015.log dengan format metrics_agg_{YmdH}.log 
+Karena file log bersifat sensitif pastikan semua file log hanya dapat dibaca oleh user pemilik file. 
+Note:
+Nama file untuk script per menit adalah minute_log.sh
+Nama file untuk script agregasi per jam adalah aggregate_minutes_to_hourly_log.sh
+Semua file log terletak di /home/{user}/log
+Semua konfigurasi cron dapat ditaruh di file skrip .sh nya masing-masing dalam bentuk comment
+Berikut adalah contoh isi dari file metrics yang dijalankan tiap menit:
+mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size 15949,10067,308,588,5573,4974,2047,43,2004,/home/user/coba/,74M
+
+Berikut adalah contoh isi dari file aggregasi yang dijalankan tiap jam:
+type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size minimum,15949,10067,223,588,5339,4626,2047,43,1995,/home/user/coba/,50M maximum,15949,10387,308,622,5573,4974,2047,52,2004,/home/user/coba/,74M average,15949,10227,265.5,605,5456,4800,2047,47.5,1999.5,/home/user/coba/,62M
+
+**STEP**
+1. sudo nano minute_log.sh
+2. Membuat bash script pada minute_log.sh
+```
+#!/bin/bash
+
+# Function to get memory metrics
+get_memory_metrics() {
+    mem_info=($(grep -E "MemTotal|MemFree|MemAvailable|Buffers|Cached|SwapTotal|SwapFree" /proc/meminfo | awk '{print $2}'))
+    mem_total=${mem_info[0]}
+    mem_free=$(( ${mem_info[1]} + ${mem_info[2]} + ${mem_info[3]} ))
+    mem_shared=0 # Not available in /proc/meminfo
+    mem_buff=${mem_info[3]}
+    mem_available=${mem_info[5]}
+    swap_total=${mem_info[6]}
+    swap_free=${mem_info[7]}
+    echo "$mem_total,$((mem_total - mem_free)),$mem_free,$mem_shared,$mem_buff,$mem_available,$swap_total,$((swap_total - swap_free)),$swap_free"
+}
+
+get_directory_size() {
+    du -hs "$1" | awk '{print $1}'
+}
+
+directories=($(ls -d ~/[^.]*))
+
+for dir in "${directories[@]}"; do
+    memory_metrics=$(get_memory_metrics)
+    directory_size=$(get_directory_size "$dir")
+    echo "$memory_metrics,$dir,$directory_size"
+done
+
+#command cron
+#* * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/minute_log.sh >> /home/admin-haidar/log/metrics_$(date +\%Y\%m\%d\%H\%M\%S).log 2>&1
+```
+3. sudo chmod +x minute_log.sh
+4. Menambahkan command "* * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/minute_log.sh >> /home/admin-haidar/log/metrics_$(date +\%Y\%m\%d\%H\%M\%S).log 2>&1" pada crontab -e
+5. sudo nano aggregate_minutes_to_hourly_log.sh
+6. Membuat bash script pada aggragate_minutes_to_hourly_long.sh
+```
+#!/bin/bash
+
+date=$(date "+%Y%m%d%H")
+
+#echo "$date"
+
+directories=($(ls -d ~/[^.]*))
+
+for dir in "${directories[@]}"
+do
+	for file in /home/admin-haidar/log/metrics_"$date"*.log
+	do
+		if [ -f "$file" ]; then
+			#mem_total
+            	        min=$((99999999999))
+		        max=$((-99999999999))
+			mem_total=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $1}' "$file")
+			if [[ $mem_total -gt $max ]]; then
+				max=$mem_total
+			fi
+
+			if [[ $mem_total -lt $min ]]; then
+				min=$mem_total
+			fi
+			max_memtotal=$max
+			min_memtotal=$min
+
+			#mem_used
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        mem_used=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $2}' "$file")
+                        if [[ $mem_used -gt $max ]]; then
+                                max=$mem_used
+                        fi
+
+                        if [[ $mem_used -lt $min ]]; then
+                                min=$mem_used
+                        fi
+                        max_memused=$max
+                        min_memused=$min
+
+			#mem_free
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        mem_free=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $3}' "$file")
+                        if [[ $mem_free -gt $max ]]; then
+                                max=$mem_free
+                        fi
+
+                        if [[ $mem_free -lt $min ]]; then
+                                min=$mem_free
+                        fi
+                        max_memfree=$max
+                        min_memfree=$min
+
+			#mem_shared
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        mem_shared=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $4}' "$file")
+                        if [[ $mem_shared -gt $max ]]; then
+                                max=$mem_shared
+                        fi
+
+                        if [[ $mem_shared -lt $min ]]; then
+                                min=$mem_shared
+                        fi
+                        max_memshared=$max
+                        min_memshared=$min
+
+                        #mem_buff
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        mem_buff=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $5}' "$file")
+                        if [[ $mem_buff -gt $max ]]; then
+                                max=$mem_buff
+                        fi
+
+                        if [[ $mem_buff -lt $min ]]; then
+                                min=$mem_buff
+                        fi
+                        max_membuff=$max
+                        min_membuff=$min
+
+                        #mem_available
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        mem_available=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $6}' "$file")
+                        if [[ $mem_available -gt $max ]]; then
+                                max=$mem_available  
+                        fi
+
+                        if [[ $mem_available -lt $min ]]; then
+                                min=$mem_available
+                        fi
+                        max_memavailable=$max
+                        min_memavailable=$min
+
+                        #swap_total
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        swap_total=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $7}' "$file")
+                        if [[ $swap_total -gt $max ]]; then
+                                max=$swap_total 
+                        fi
+
+                        if [[ $swap_total -lt $min ]]; then
+                                min=$swap_total
+                        fi
+                        max_swaptotal=$max
+                        min_swaptotal=$min
+
+                        #swap_used
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        swap_used=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $8}' "$file")
+                        if [[ $swap_used -gt $max ]]; then
+                                max=$swap_used 
+                        fi
+
+                        if [[ $swap_used -lt $min ]]; then
+                                min=$swap_used
+                        fi
+                        max_swapused=$max
+                        min_swapused=$min
+
+                        #swap_free
+                        min=$((99999999999))
+                        max=$((-99999999999))
+                        swap_free=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $9}' "$file")
+                        if [[ $swap_free -gt $max ]]; then
+                                max=$swap_free
+                        fi
+
+                        if [[ $swap_free -lt $min ]]; then
+                                min=$swap_free
+                        fi
+                        max_swapfree=$max
+                        min_swapfree=$min
+
+                        #path_size
+                        min=$((99999999999))
+                        max=$((0))
+                        path_size=$(awk -v dir="$dir" 'BEGIN { FS = "," } ; $0 ~ dir {print $11}' "$file")
+
+			interger=$(echo $path_size | sed 's/[^0-9.]//g')
+			interger=${interger%.*}
+			suffix=${path_size//$interger}
+
+                        if [[ $interger > $max ]]; then
+                                max=$interger
+                        fi
+
+                        if [[ $interger < $min ]]; then
+                                min=$interger
+                        fi
+                        max_pathsize=$max
+                        min_pathsize=$min
+
+        	fi
+	done
+        avg_memtotal=$(((max_memtotal+min_memtotal)/2))
+        avg_memused=$(((max_memused+min_memused)/2))
+        avg_memfree=$(((max_memfree+min_memfree)/2))
+        avg_memshared=$(((max_memshared+min_memshared)/2))
+	avg_membuff=$(((max_membuff+min_membuff)/2))
+	avg_memavailable=$(((max_memavailable+min_memavailable)/2))
+	avg_swaptotal=$(((max_swaptotal+min_swaptotal)/2))
+	avg_swapused=$(((max_swapused+min_swapused)/2))
+	avg_swapfree=$(((max_swapfree+min_swapfree)/2))
+	avg_pathsize=$(((max_pathsize+min_pathsize)/2))
+
+	echo "minimum,$min_memtotal,$min_memused,$min_memfree,$min_memshared,$min_membuff,$min_memavailable,$min_swaptotal,$min_swapused,$min_swapfree,$dir,$min_pathsize$suffix"
+        echo "maximum,$max_memtotal,$max_memused,$max_memfree,$max_memshared,$max_membuff,$max_memavailable,$max_swaptotal,$max_swapused,$max_swapfree,$dir,$max_pathsize$suffix"
+        echo "average,$avg_memtotal,$avg_memused,$avg_memfree,$avg_memshared,$avg_membuff,$avg_memavailable,$avg_swaptotal,$avg_swapused,$avg_swapfree,$dir,$avg_pathsize$suffix"
+	echo -e "\n"
+done
+
+#command cron:
+#59 * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/aggregate_minutes_to_hourly_log.sh >> /home/admin-haidar/log/metrics_agg_$(date +\%Y\%m\%d\%H).log 2>&1
+```
+7. sudo chmod +x aggregate_minutes_to_hourly_login.sh
+8. Menambahkan command "59 * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/aggregate_minutes_to_hourly_log.sh >> /home/admin-haidar/log/metrics_agg_$(date +\%Y\%m\%d\%H).log 2>&1" pada crontab -e
