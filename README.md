@@ -64,8 +64,121 @@ Hasil akhir:
 * [image].txt
 
 
+
+
   **STEP**
+
+
   
+DOKUMENTASI SISOP NO 3
+
+1. touch awal.sh (buat awal.sh)
+
+2. chmod + x awal.sh (permission awal.sh)
+
+3. nano awal.sh (edit dulu scriptnya)
+
+ISI SCRIPT awal.sh
+```
+ #!/bin/bash
+
+ #Download file ZIP dari Google Drive
+wget -O file.zip 'https://drive.google.com/uc?export=download&id=1oGHdTf4_76_RacfmQIV4i7os4sGwa9vN'
+
+#Ekstrak file ZIP
+unzip file.zip
+
+ #Buat direktori untuk karakter Genshin Impact
+mkdir genshin_character
+unzip genshin_character.zip
+cd genshin_character || exit
+
+ #Buat direktori untuk setiap wilayah
+mkdir Inazuma Mondstat Liyue Sumeru Fontaine
+
+#Iterasi setiap file dalam direktori
+for file in *; do
+    # Ambil nama karakter dari file dan sesuaikan dengan data dari file CSV
+    originalName=$(echo $file | xxd -r -p)
+    editedName=$(awk -F ',' "/$originalName/"'{OFS = " - ";print $2,$1,$3,$4}' /home/kali/Praktikumsisop/modul1/soal3/list_character.csv)
+    region=$(awk -F ',' "/$originalName/"'{print $2}' /home/kali/Praktikumsisop/modul1/soal3/list_character.csv)```
+
+   # Ubah nama file menjadi nama yang sudah diedit
+    mv $file "$editedName".jpg
+
+  # Pindahkan file ke direktori wilayah yang sesuai
+  mv "$editedName".jpg "/home/kali/Praktikumsisop/modul1/soal3/genshin_character/$region"
+done
+
+clear
+
+cd ..
+echo "Jumlah Weapon!"
+
+tail -n +2 list_character.csv | awk -F ',' '{print $4}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' |  sort | uniq -c | while read -r count word; do
+        echo "$word : $count"
+done
+
+rm file.zip genshin_character.zip list_character.csv 
+```
+
+4. bash awal.sh (run script awal.sh)
+
+5. Sudo apt install steghide
+
+6. touch search.sh (buat script search.sh)
+
+7. Chmod +x search.sh
+
+8. nano search.sh (edit script lagi)
+
+ISI SCRIPT search.sh
+```
+#!/bin/bash
+
+log_file="image.log"
+
+extract_value() {
+    local image_path="$1"
+    local txt_file="${image_path%.*}.txt"
+
+    # Extract value from the image using steghide
+    steghide extract -sf "$image_path" -xf "$txt_file" -p "" > /dev/null 2>&1
+
+    if [ -f "$txt_file" ]; then
+        # Decode the content of the txt file using base64
+        decrypted_value=$(cat "$txt_file" | base64 -d)
+
+           if [[ $decrypted_value == *https:* ]]; then
+            echo "$decrypted_value"
+            echo "$decrypted_value" >> link_secret.txt
+
+            wget -O secret.jpg "$decrypted_value" > /dev/null 2>&1
+
+            if [ $? -eq 0 ]; then
+                echo "[$(date '+%d/%m/%y %H:%M:%S')] [FOUND] [$image_path]" >> "$log_file"
+                rm "$txt_file"
+                exit 0
+            else
+                echo "Failed to download file from URL: $decrypted_value"
+            fi
+        else
+            echo "[$(date '+%d/%m/%y %H:%M:%S')] [NOT FOUND] [$image_path]" >> "$log_file"
+            rm "$txt_file"
+        fi
+    else
+        echo "[$(date '+%d/%m/%y %H:%M:%S')] [EXTRACTION FAILED] [$image_path]" >> "$log_file"
+    fi
+}
+
+for region in Mondstat Liyue Fontaine Inazuma Sumeru; do
+    pass=""
+    for image in "/home/kali/Praktikumsisop/modul1/soal3/genshin_character/$region"/*.jpg; do
+        extract_value "$image"
+        sleep 1
+    done
+done
+```
 
 
 # soal 4
