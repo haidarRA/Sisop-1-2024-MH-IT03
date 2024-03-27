@@ -25,6 +25,9 @@ Cipung dan Abe hanya akan membeli stok barang yang menghasilkan profit paling ti
 Karena ada seseorang yang lapor kepada Cipung dan Abe bahwa pesanannya tidak kunjung sampai, maka mereka ingin mengecek apakah pesanan itu ada. Cari purchase date dan amount (quantity) dari nama adriaens
 
 
+**STEP**
+
+
 
 # soal 2
 
