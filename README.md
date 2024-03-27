@@ -28,9 +28,10 @@ Karena ada seseorang yang lapor kepada Cipung dan Abe bahwa pesanannya tidak kun
 **STEP**
 
 1. Mkdir bebas (untuk membuat direktori)
- 
-2. curl -L -o sandbox.csv 'https://drive.google.com/uc?id=1cC6MYBI3wRwDgqlFQE1OQUN83JAreId0&export=download' | awk -F'/' '/filename/{print $NF}' RS='&' (download sandbox.csv, disini kita pake curl supaya lebih 
-  fleksibel) 
+ ```
+2. curl -L -o sandbox.csv 'https://drive.google.com/uc?id=1cC6MYBI3wRwDgqlFQE1OQUN83JAreId0&export=download' | awk -F'/' '/filename/{print $NF}' RS='&'
+ ```
+(download sandbox.csv, disini kita pake curl supaya lebih fleksibel) 
   
 3. Touch sandbox.sh (untuk membuat file sandbox.csv)
  
