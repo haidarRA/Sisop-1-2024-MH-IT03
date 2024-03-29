@@ -33,7 +33,7 @@ Karena ada seseorang yang lapor kepada Cipung dan Abe bahwa pesanannya tidak kun
  ```
 (download sandbox.csv, disini kita pake curl supaya lebih fleksibel) 
   
-3. Touch sandbox.sh (untuk membuat file sandbox.csv)
+3. Touch sandbox.sh (untuk membuat file sandbox.sh)
  
 4. Chmod +x sandbox.sh (memberikan permission terhadap file)
  
