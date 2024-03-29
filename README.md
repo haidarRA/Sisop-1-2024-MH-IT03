@@ -412,34 +412,31 @@ DOKUMENTASI SISOP NO 3
 
 ISI SCRIPT awal.sh
 ```
- #!/bin/bash
+!/bin/bash
 
- #Download file ZIP dari Google Drive
 wget -O file.zip 'https://drive.google.com/uc?export=download&id=1oGHdTf4_76_RacfmQIV4i7os4sGwa9vN'
 
-#Ekstrak file ZIP
 unzip file.zip
 
- #Buat direktori untuk karakter Genshin Impact
 mkdir genshin_character
 unzip genshin_character.zip
 cd genshin_character || exit
 
- #Buat direktori untuk setiap wilayah
+# Buat direktori untuk setiap wilayah
 mkdir Inazuma Mondstat Liyue Sumeru Fontaine
 
-#Iterasi setiap file dalam direktori
+# Iterasi setiap file dalam direktori
 for file in *; do
     # Ambil nama karakter dari file dan sesuaikan dengan data dari file CSV
     originalName=$(echo $file | xxd -r -p)
-    editedName=$(awk -F ',' "/$originalName/"'{OFS = " - ";print $2,$1,$3,$4}' /home/kali/Praktikumsisop/modul1/soal3/list_character.csv)
-    region=$(awk -F ',' "/$originalName/"'{print $2}' /home/kali/Praktikumsisop/modul1/soal3/list_character.csv)```
+    editedName=$(awk -F ',' "/$originalName/"'{OFS = " - ";print $2,$1,$3,$4}' /home/kali/Praktikumsisop/modul1/soal_3/list_character.csv | tr -d '\r')
+    region=$(awk -F ',' "/$originalName/"'{print $2}' /home/kali/Praktikumsisop/modul1/soal_3/list_character.csv)
 
-   # Ubah nama file menjadi nama yang sudah diedit
-    mv $file "$editedName".jpg
+    # Ubah nama file menjadi nama yang sudah diedit
+    mv "$file" "$editedName".jpg
 
-  # Pindahkan file ke direktori wilayah yang sesuai
-  mv "$editedName".jpg "/home/kali/Praktikumsisop/modul1/soal3/genshin_character/$region"
+    # Pindahkan file ke direktori wilayah yang sesuai
+    mv "$editedName".jpg "/home/kali/Praktikumsisop/modul1/soal_3/genshin_character/$region"
 done
 
 clear
@@ -451,7 +448,8 @@ tail -n +2 list_character.csv | awk -F ',' '{print $4}' | sed 's/^[[:space:]]*//
         echo "$word : $count"
 done
 
-rm file.zip genshin_character.zip list_character.csv 
+rm file.zip genshin_character.zip list_character.csv
+
 ```
 
 4. bash awal.sh (run script awal.sh)
@@ -511,6 +509,26 @@ for region in Mondstat Liyue Fontaine Inazuma Sumeru; do
     done
 done
 ```
+# Revisi no 3!
+
+* Revisi pada awal.sh karena format nama (Region - Nama - Elemen - Senjata.jpg) terdapat kesalahan format pada variabel Senjata yang harusnya senjata.jpg malah senjata'$'r"
+  maka dari itu saya merubah kode
+```
+   editedName=$(awk -F ',' "/$originalName/"'{OFS = " - ";print $2,$1,$3,$4}' /home/kali/Praktikumsisop/modul1/soal_3/list_character.csv)
+```
+dengan kode dibawah
+```
+editedName=$(awk -F ',' "/$originalName/"'{OFS = " - ";print $2,$1,$3,$4}' /home/kali/Praktikumsisop/modul1/soal_3/list_character.csv | tr -d '\r')
+```
+yang saya tambahkan ialah:
+ ```
+| tr -d '\r'
+```
+command tersebut berfungsi untuk menghapus karakter khusus (CR,Carriage return)
+
+Sekian :>
+
+
 
 
 # soal 4
