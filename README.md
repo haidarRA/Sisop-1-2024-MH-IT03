@@ -362,6 +362,9 @@ fi
 ```
 6. sudo chmod +x login.sh
 
+**REVISI**
+1. Path users/users.txt dan users/auth.log diganti menjadi ~/users/users.txt dan ~/users/auth.log untuk meningkatkan kompatibilitas.
+
 # soal 3
 
 **soal :**
@@ -771,3 +774,7 @@ done
 ```
 7. sudo chmod +x aggregate_minutes_to_hourly_login.sh
 8. Menambahkan command "59 * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/aggregate_minutes_to_hourly_log.sh >> /home/admin-haidar/log/metrics_agg_$(date +\%Y\%m\%d\%H).log 2>&1" pada crontab -e
+
+**REVISI**
+1. Menggunakan free -m pada minute_log.sh
+2. Monitoring resource hanya pada /home/{user} (home directory dari user), bukan setiap directory yang ada di /home/{user}.
