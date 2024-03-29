@@ -22,7 +22,7 @@ for file in *; do
     mv "$file" "$editedName".jpg
 
     # Pindahkan file ke direktori wilayah yang sesuai
-    mv "$editedName".jpg "/home/kali/soal_3/genshin_character/$region"
+    mv "$editedName".jpg "/home/kali/Praktikumsisop/modul1/soal_3/genshin_character/$region"
 done
 
 clear
