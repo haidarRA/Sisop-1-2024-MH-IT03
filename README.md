@@ -613,12 +613,29 @@ command tersebut berfungsi untuk menghapus karakter khusus (CR,Carriage return)
 **Isi search.sh**
 ![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/c0a76ba3-b889-4ae9-9a03-f119c5cf577c)
 
+
+
 **hasil search.sh**
+
 ![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/3086ce26-4fcd-4e26-9183-9b3fe5b56271)
 
 
+**Isi image.log**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/b3b8e512-1fb8-488b-9d72-cedea4d71af2)
 
 
+**Isi secret_link.txt**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/359ba85e-fad0-4b25-92e7-541e954485b0)
+
+**Gambar secret.jpg**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/7d401917-af94-4cdb-959d-0c424c979689)
+
+
+
+**Hasil akhir**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/43fa652b-e477-4ef3-a064-88a12de42565)
 
 
 # soal 4
