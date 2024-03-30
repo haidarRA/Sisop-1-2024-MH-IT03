@@ -1,29 +1,21 @@
 #!/bin/bash
 
-# Function to get memory metrics
-get_memory_metrics() {
-    mem_info=($(grep -E "MemTotal|MemFree|MemAvailable|Buffers|Cached|SwapTotal|SwapFree" /proc/meminfo | awk '{print $2}'))
-    mem_total=${mem_info[0]}
-    mem_free=$(( ${mem_info[1]} + ${mem_info[2]} + ${mem_info[3]} ))
-    mem_shared=0 # Not available in /proc/meminfo
-    mem_buff=${mem_info[3]}
-    mem_available=${mem_info[5]}
-    swap_total=${mem_info[6]}
-    swap_free=${mem_info[7]}
-    echo "$mem_total,$((mem_total - mem_free)),$mem_free,$mem_shared,$mem_buff,$mem_available,$swap_total,$((swap_total - swap_free)),$swap_free"
-}
+mem_total=$(free -m | awk 'NR == 2 {print $2}')
+mem_used=$(free -m | awk 'NR == 2 {print $3}')
+mem_free=$(free -m | awk 'NR == 2 {print $4}')
+mem_shared=$(free -m | awk 'NR == 2 {print $5}')
+mem_buff=$(free -m | awk 'NR == 2 {print $6}')
+mem_available=$(free -m | awk 'NR == 2 {print $7}')
+swap_total=$(free -m | awk 'NR == 3 {print $2}')
+swap_used=$(free -m | awk 'NR == 3 {print $3}')
+swap_free=$(free -m | awk 'NR == 3 {print $4}')
 
-get_directory_size() {
-    du -hs "$1" | awk '{print $1}'
-}
+path=$(echo "$HOME")
+path_size=$(du -sh ~ | awk '{print $1}')
 
-directories=($(ls -d ~/[^.]*))
-
-for dir in "${directories[@]}"; do
-    memory_metrics=$(get_memory_metrics)
-    directory_size=$(get_directory_size "$dir")
-    echo "$memory_metrics,$dir,$directory_size"
-done
+echo "mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size"
+echo "$mem_total,$mem_used,$mem_free,$mem_shared,$mem_buff,$mem_available,$swap_total,$swap_used,$swap_free,$path,$path_size"
 
 #command cron
-#* * * * * umask 077 && /bin/bash /home/admin-haidar/sisop/modul1no4/minute_log.sh >> /home/admin-haidar/log/metrics_$(date +\%Y\%m\%d\%H\%M\%S).log 2>&1
+#* * * * * umask 077 && /bin/bash ~/sisop/modul1/soal_4/minute_log.sh >> ~/log/metrics_$(date +\%Y\%m\%d\%H\%M\%S).log 2>&1
+
