@@ -64,10 +64,7 @@ Isi Script sandbox.sh
    ![Screenshot 2024-03-30 164808](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/150374973/b76d17d8-60ef-469b-99aa-9ef6f52551ec)
 
 **Pengerjaan**
-![Screenshot 2024-03-30 164735](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/150374973/d5826b8e-4dad-406a-a477-7d40405c1187)
-
-
-
+![Screenshot 2024-03-30 165735](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/150374973/8c9e1377-fc06-4778-9ef0-232f8b12779f)
 
 
 # soal 2
