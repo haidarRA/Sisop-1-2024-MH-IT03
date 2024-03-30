@@ -371,7 +371,58 @@ fi
 2. Conditional statement untuk mengecek apakah password yang dibuat sudah sesuai dengan format pada register.sh tidak dapat berjalan dengan baik sehingga password yang dibuat formatnya tetap salah meskipun format dari password tersebut sudah benar.
 
 **Setelah revisi**
+
 Tidak ada kendala.
+
+**Hasil pengerjaan (setelah revisi)**
+
+**1. Register user**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/7e2546bc-1b71-4c9d-932b-cb5b5bfe3e27)
+
+**2. Login user (admin)**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/1fd481e4-eb2d-4007-8873-84d12ca7141f)
+
+**3. Login user (non admin)**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/95e1faed-cd1c-464d-816e-9ff6dd144234)
+
+**4. Forgot password**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/08e4a6df-9a24-4846-9878-9910dd478b9f)
+
+**5. Register dengan email sudah ada**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/829364a3-ff95-4a23-909d-02279b71973d)
+
+**6. Register dengan email yang formatnya salah**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/4fa5d1bd-e497-4cfe-814b-b399539b1981)
+
+**7. Register dengan password yang salah**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/2856596e-b4f4-4ec5-b1aa-2f7d73ef5db3)
+
+**8. Login dengan email yang tidak ada di users.txt**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/bdc54c16-3d38-4644-85ee-7ed44caa1f94)
+
+**9. Login dengan password yang salah**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/5fdb6914-f088-45a2-a15a-73b22e0ee5fe)
+
+**10. Gagal menjawab security question**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/bc7bc990-3686-495b-9af2-1037e082a71a)
+
+**11. Tampilan isi file users.txt**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/0f41f83f-6958-4398-b5d4-d628a10b3909)
+
+**12. Tampilan isi file auth.log**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/03fbf9d5-690b-4923-9960-16dfcc49a0a8)
 
 # soal 3
 
@@ -984,10 +1035,14 @@ echo -e "\n"
 #59 * * * * umask 077 && /bin/bash ~/sisop/modul1/soal_4/aggregate_minutes_to_hourly_log.sh >> ~/log/metrics_agg_$(date +\%Y\%m\%d\%H\%M\%S).log 2>&1
 ```
 
+Tampilan crontab:
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/a1dae6e8-fb6f-4964-8fbd-3dd3e92b84a9)
+
 **Kendala yang dialami**
 **Sebelum revisi**
 1. Salah satu metric resource yang didapat (sebelum menggunakan free -m) ada yang bernilai negatif.
 2. Script untuk menghitung nilai maksimum dan minimum pada aggregate_minutes_to_hourly_log.sh tidak dapat berjalan dengan baik sehingga nilainya tetap konstan.
+3. Terjadi kesalahan perhitungan pada metric resource path_size karena tipe data dari path_size adalah string dan bukan interger.
 
 **Setelah revisi**
 1. Loop pada script aggregate_minutes_to_hourly_log.sh menyebabkan sebuah error dan script tidak dapat berjalan.
@@ -995,3 +1050,14 @@ echo -e "\n"
 syntax error near unexpected token `done'
 `done'
 ```
+
+**Hasil pengerjaan (setelah revisi)**
+
+**1. Tampilan isi file metrics_{YmdHms}.log**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/1f0fe62a-aa3e-4140-85c5-d311459ecb3f)
+
+**2. Tampilan isi file metrics_agg_{YmdH}.log**
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/149871906/c086b962-ffe6-4027-91d0-ff185ca67007)
+
