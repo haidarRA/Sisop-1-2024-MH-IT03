@@ -641,7 +641,13 @@ command tersebut berfungsi untuk menghapus karakter khusus (CR,Carriage return)
 
 ![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/43fa652b-e477-4ef3-a064-88a12de42565)
 
+# kendala NO 3
+* Kendala yang saya alami ialah ketika merun script search.sh memerlukan waktu lama entah kenapa, mungkin problem dari device.
+* Dan untuk format nama senjata.jpg ada '$'r/", ternyata adanya kekurangan command pada script
+  
+  **-setelah revisi aman-**
 
+  
 # soal 4
 **soal :**
 Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
