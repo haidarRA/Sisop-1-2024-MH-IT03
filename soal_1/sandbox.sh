@@ -15,3 +15,4 @@
    pesanan=$(awk -F',' 'NR>1 && $6=="Adriaens Grayland" {print $2 "," $17}' sandbox.csv)
    echo "Detail Pesanan Adriaens:"
    echo "$pesanan"
+
