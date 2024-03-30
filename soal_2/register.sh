@@ -18,9 +18,9 @@ then
 		isadmin=1
 	fi
 
-	if grep -q "^$email " users/users.txt; then
+	if grep -q "^$email " ~/users/users.txt; then
 		echo "Email already exists. Please use another email."
-                echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] Email $email failed to register because it already exists." >> users/auth.log
+                echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] Email $email failed to register because it already exists." >> ~/users/auth.log
 		exit 1
 	fi
 
@@ -40,20 +40,20 @@ then
 		b64=$(echo "$pass" | base64)
 		if [[ $isadmin -eq 1 ]]
 		then
-			echo "$email $username admin" >> users/users.txt
+			echo "$email $username admin" >> ~/users/users.txt
 		else
-			echo "$email $username nonadmin" >> users/users.txt
+			echo "$email $username nonadmin" >> ~/users/users.txt
 		fi
-		echo "$b64" >> users/users.txt
-		echo "$sec_question" >> users/users.txt
-		echo -e "$sec_answer\n" >> users/users.txt
+		echo "$b64" >> ~/users/users.txt
+		echo "$sec_question" >> ~/users/users.txt
+		echo -e "$sec_answer\n" >> ~/users/users.txt
 		echo "User registered successfully"
-        	echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER SUCCESS] User $username with email $email registered successfully." >> users/auth.log
+        	echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER SUCCESS] User $username with email $email registered successfully." >> ~/users/auth.log
 	else
 		echo "Password doesn't have the right format. Please create another password with the right format."
-                echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] User $username with email $email failed to register." >> users/auth.log
+                echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] User $username with email $email failed to register." >> ~/users/auth.log
 	fi
 else
 	echo "Email doesn't have the right format. Please use another email."
-	echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] Email $email failed to register." >> users/auth.log
+	echo "[$(date +"%d/%m/%y %H:%M:%S")] [REGISTER FAILED] Email $email failed to register." >> ~/users/auth.log
 fi
