@@ -67,7 +67,7 @@ Isi Script sandbox.sh
 ![Screenshot 2024-03-30 165735](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/150374973/8c9e1377-fc06-4778-9ef0-232f8b12779f)
 
 **Kendala** 
-Untuk kendala yang saya alami saat pengerjaan adalah ubuntu di laptop saya eror yang mana tidak bisa membaca file OS jadi saya mengerjakan di laptop hasan.
+Untuk kendala yang saya alami saat pengerjaan adalah ubuntu di laptop saya eror yang mana tidak bisa membaca file OS.
 
 
 # soal 2
