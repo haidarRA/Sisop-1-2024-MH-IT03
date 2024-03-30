@@ -61,6 +61,10 @@ Isi Script sandbox.sh
    ```
 6. bash sandbox.sh
 
+   ![Screenshot 2024-03-30 164808](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/150374973/b76d17d8-60ef-469b-99aa-9ef6f52551ec)
+
+
+
 
 # soal 2
 
