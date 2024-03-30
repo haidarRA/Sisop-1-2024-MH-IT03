@@ -469,7 +469,7 @@ Hasil akhir:
 
 
   
-DOKUMENTASI SISOP NO 3
+STEP SISOP NO 3
 
 1. touch awal.sh (buat awal.sh)
 
@@ -593,7 +593,30 @@ yang saya tambahkan ialah:
 ```
 command tersebut berfungsi untuk menghapus karakter khusus (CR,Carriage return)
 
-Sekian :>
+
+
+# **DOKUMENTASI NO 3**
+
+
+
+
+
+**Isi awal.sh**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/a08fecd3-9a48-4fc8-bb0e-6e14085a1a32)
+
+**hasil awal.sh**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/0b0e9e06-736b-495c-9b23-e25d9fed9546)
+
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/af5fae64-457a-4419-a209-25c8cdf9bc09)
+
+
+**Isi search.sh**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/c0a76ba3-b889-4ae9-9a03-f119c5cf577c)
+
+**hasil search.sh**
+![image](https://github.com/haidarRA/Sisop-1-2024-MH-IT03/assets/151866048/3086ce26-4fcd-4e26-9183-9b3fe5b56271)
+
+
 
 
 
